@@ -56,12 +56,19 @@ export function setupSocketHandlers(io: SocketServer) {
     });
 
     // WebRTC signaling - offer
-    socket.on('webrtc-offer', (data: { roomId: string; offer: any; to: string }) => {
+    socket.on('webrtc-offer', (data: { roomId: string; offer: any; to?: string }) => {
       const { roomId, offer, to } = data;
-      socket.to(roomId).emit('webrtc-offer', {
-        offer,
-        from: socket.id,
-      });
+      if (to) {
+        socket.to(to).emit('webrtc-offer', {
+          offer,
+          from: socket.id,
+        });
+      } else {
+        socket.to(roomId).emit('webrtc-offer', {
+          offer,
+          from: socket.id,
+        });
+      }
     });
 
     // WebRTC signaling - answer

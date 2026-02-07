@@ -20,6 +20,10 @@ export default function VideoCall({ roomId, displayName }: VideoCallProps) {
 
   // Initialize peer and local media
   useEffect(() => {
+    let mounted = true;
+    let currentStream: MediaStream | null = null;
+    let currentPeer: Peer | null = null;
+
     const initPeer = async () => {
       try {
         // Get local media stream
@@ -27,6 +31,13 @@ export default function VideoCall({ roomId, displayName }: VideoCallProps) {
           video: true,
           audio: true,
         });
+        
+        if (!mounted) {
+          stream.getTracks().forEach(track => track.stop());
+          return;
+        }
+
+        currentStream = stream;
         setLocalStream(stream);
 
         if (localVideoRef.current) {
@@ -35,10 +46,11 @@ export default function VideoCall({ roomId, displayName }: VideoCallProps) {
 
         // Initialize PeerJS
         const newPeer = new Peer();
+        currentPeer = newPeer;
         
         newPeer.on('open', (id) => {
           console.log('Peer ID:', id);
-          setPeerId(id);
+          if (mounted) setPeerId(id);
         });
 
         newPeer.on('call', (call: MediaConnection) => {
@@ -47,24 +59,28 @@ export default function VideoCall({ roomId, displayName }: VideoCallProps) {
           
           call.on('stream', (remoteStream) => {
             console.log('Received remote stream from:', call.peer);
-            setRemoteStreams((prev) => {
-              const newMap = new Map(prev);
-              newMap.set(call.peer, remoteStream);
-              return newMap;
-            });
+            if (mounted) {
+              setRemoteStreams((prev) => {
+                const newMap = new Map(prev);
+                newMap.set(call.peer, remoteStream);
+                return newMap;
+              });
+            }
           });
 
           call.on('close', () => {
             console.log('Call closed with:', call.peer);
-            setRemoteStreams((prev) => {
-              const newMap = new Map(prev);
-              newMap.delete(call.peer);
-              return newMap;
-            });
+            if (mounted) {
+              setRemoteStreams((prev) => {
+                const newMap = new Map(prev);
+                newMap.delete(call.peer);
+                return newMap;
+              });
+            }
           });
         });
 
-        setPeer(newPeer);
+        if (mounted) setPeer(newPeer);
       } catch (error) {
         console.error('Error initializing video call:', error);
       }
@@ -73,11 +89,12 @@ export default function VideoCall({ roomId, displayName }: VideoCallProps) {
     initPeer();
 
     return () => {
-      if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
+      mounted = false;
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
       }
-      if (peer) {
-        peer.destroy();
+      if (currentPeer) {
+        currentPeer.destroy();
       }
     };
   }, []);
