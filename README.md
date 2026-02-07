@@ -33,7 +33,7 @@ A single-web workspace where hackathon participants can collaborate live (video 
 
 ## 🛠 Tech Stack
 
-- **Frontend:** Next.js 14 (React, TypeScript, App Router)
+- **Frontend:** Next.js 15 (React, TypeScript, App Router)
 - **Backend:** Node.js + Express + Socket.IO (TypeScript)
 - **Database:** PostgreSQL
 - **Real-time:** Socket.IO for chat + WebRTC signaling

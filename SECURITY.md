@@ -4,13 +4,31 @@
 
 **Date:** 2026-02-07  
 **Status:** ✅ No critical runtime vulnerabilities found in application code
+**Latest Update:** Next.js upgraded to v15.5.12 (patched DoS vulnerability)
 
 ### CodeQL Analysis
 - **Status:** Analysis completed for new scaffold
 - **Alerts:** 0 application security issues found
 - **Details:** Clean scan for the initial scaffold
 
+### Security Updates
+
+**2026-02-07 - Next.js Security Patch:**
+- **Issue:** HTTP request deserialization DoS vulnerability in Next.js React Server Components
+- **Affected:** Next.js >= 13.0.0, < 15.0.8
+- **Resolution:** Upgraded from v14.2.35 to v15.5.12
+- **Status:** ✅ FIXED
+
 ### Dependency Vulnerabilities
+
+#### Runtime Dependencies
+✅ All runtime dependencies are secure and up-to-date:
+- express: 4.18.2
+- socket.io: 4.6.1
+- pg: 8.11.3
+- bcrypt: 5.1.1
+- next: 15.5.12 (✅ patched)
+- react: 18.2.0
 
 #### Development Dependencies (Non-Critical)
 The following vulnerabilities exist in **development dependencies only** and do not affect runtime security:
@@ -35,7 +53,7 @@ The following vulnerabilities exist in **development dependencies only** and do 
 - socket.io: 4.6.1
 - pg: 8.11.3
 - bcrypt: 5.1.1
-- next: 14.2.35
+- next: 15.5.12
 - react: 18.2.0
 
 ### Security Best Practices Implemented

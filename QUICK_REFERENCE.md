@@ -11,7 +11,7 @@
 ✅ CORS configured for local development  
 
 ### Frontend Features
-✅ Next.js 14 with App Router and TypeScript  
+✅ Next.js 15 with App Router and TypeScript  
 ✅ Three main pages: Home, Room, Public View  
 ✅ Three React components: VideoCall, Chat, Posts  
 ✅ Socket.IO client integration  
@@ -142,7 +142,7 @@ cd server && npm run migrate
 ## 📊 Tech Stack Versions
 
 - Node.js: >= 18.0.0
-- Next.js: 14.x
+- Next.js: 15.x
 - React: 18.x
 - Express: 4.x
 - Socket.IO: 4.x
